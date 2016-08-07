@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sept - StratUp Landing Page</title>
+    
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,400italic,600,300italic,300|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+    <!-- Bootstrap -->
+    <link href="{{=URL('static/template','css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{=URL('static/template','css/font-awesome.min.css')}}" rel="stylesheet">
+
+
+    <link href="{{=URL('static/template','css/owl.carousel.css')}}" rel="stylesheet">
+    <link href="{{=URL('static/template','css/owl.theme.css')}}" rel="stylesheet">
+    <link href="{{=URL('static/template','css/owl.transitions.css')}}" rel="stylesheet">
+
+    <link href="{{=URL('static/template','css/style.css')}}" rel="stylesheet">
+
+  </head>
+
+<section class="blog" id="blog" style="margin-top: -50px;">
+            <div class="container">
+            <div class="row">
+                    <div class="col-md-12">
+                    <a href="{{=URL('default','index')}}">
+                        <div class="section-title st-center">
+                            <h3>Stories</h3>
+                            <p>Search Results</p>
+                        </div></a>
+                    </div>
+                </div>
+                
+                <div class="row">
+                
+                    <div class="col-md-12">
+                        <div class="blog-post">
+                            <div class="post-meta">
+								{{for result in search_result['response']['docs']:}}
+                                <span class="author"><a href="#">{{=result['author'][0]}}</a></span>,
+                                <span>Posted at <strong>{{=result['date'][0]}}</strong></span>
+                            </div>
+                            <h2 class="post-title">{{=result['title'][0]}}</h2>
+                            <div class="post-thumb"><a href="#"></a></div>
+							
+                            <div class="post-content">
+                                <p>
+								{{if 'content' in result.keys():}}
+								{{=search_result['response']['docs'][0]['content'][0]}}
+								{{else:}}
+								WE SAİD THAT CONTENT DOESN'T EXİST !!!!!	
+								</p>
+                            </div>
+						    {{pass}}
+							{{pass}}
+							{{pass}}
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </section>

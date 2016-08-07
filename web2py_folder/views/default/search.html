@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search Story</title>
+    
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,400italic,600,300italic,300|Oswald:400,300,700' rel='stylesheet' type='text/css'>
+    <!-- Bootstrap -->
+    <link href="{{=URL('static/template','css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{=URL('static/template','css/font-awesome.min.css')}}" rel="stylesheet">
+
+
+    <link href="{{=URL('static/template','css/owl.carousel.css')}}" rel="stylesheet">
+    <link href="{{=URL('static/template','css/owl.theme.css')}}" rel="stylesheet">
+    <link href="{{=URL('static/template','css/owl.transitions.css')}}" rel="stylesheet">
+
+    <link href="{{=URL('static/template','css/style.css')}}" rel="stylesheet">
+
+  </head>
+
+<section class="blog" id="blog" style="margin-top: -50px;">
+            <div class="container">
+            <div class="row">
+                    <div class="col-md-12">
+                    <a href="{{=URL('default','index')}}">
+                        <div class="section-title st-center">
+                            <h3>Stories</h3>
+                            <p>Search Results</p>
+                        </div></a>
+                    </div>
+                </div>
+                
+                <div class="row">
+                <div class="col-md-4">
+                        <div class="widgets">
+                            <div class="widget">
+                                <form action="" class="">
+                                    <div class="input-group">
+                                        <input name="searchQuery" type="text" class="form-control" placeholder="Search for..." required>
+        	<input name="prevQuery" type="text" value="{{=request.vars.category}}" hidden="hidden"/>
+		{{if request.vars.category:}}
+                <input name="category" type="text" value={{=request.vars.category}} hidden="hidden">
+        	{{pass}}
+            {{if request.vars.date:}}
+                <input name="date" type="text" value={{=request.vars.date[-4:]}} hidden="hidden">
+            {{pass}}
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-lg" type="submit"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="widget">
+                                <h2 class="widget-title">Categories</h2>
+				{{categories = search_result['facet_counts']['facet_fields']['category']}}
+				{{for i in range(0,len(categories),2):}}
+        			{{if categories[i+1] != 0:}}
+                                <ul>
+                                    <li><a href="{{=URL('default', 'search', args=i+1)}}?searchQuery={{=request.vars.searchQuery}}&category={{=categories[i]}}">{{=categories[i]}}<span class="badge pull-right"> {{=categories[i+1]}}</span></a></li>
+                                    
+                                </ul>
+				{{pass}}
+				{{pass}}
+                            </div>
+
+
+                            <div class="widget">
+                                <h2 class="widget-title">Years</h2>
+                                 {{years = ['2011', '2012','2013','2014','2015','2016']}}
+<ul>
+                         {{for year in years:}}
+      <li {{if request.vars.date and year == request.vars.date[-4:]:}} class="active" {{pass}} role="presentation"><a href="{{=URL('default', 'search', args=1)}}?searchQuery={{=request.vars.searchQuery}}{{if request.vars.prevQuery and (request.vars.prevQuery != request.vars.searchQuery):}}+AND+{{=request.vars.prevQuery}}{{pass}}&date={{=year}}{{if request.vars.category:}}&category={{=request.vars.category}}{{pass}}"> {{=year}}</a></li>
+    {{pass}}</ul>
+                            </div>
+
+
+
+
+
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+			{{for result in search_result['response']['docs']:}}
+        		{{if 'content' in result.keys():}}
+                        <div class="blog-post">
+                            <div class="post-meta">
+                                <span class="author"><a href="#">{{=result['author'][0]}}</a></span>,
+                                <span>Posted at <strong>{{=result['date'][0]}}</strong></span>
+                            </div>
+                            <h2 class="post-title">{{=result['title'][0]}}</h2>
+                            <div class="post-thumb"><a href="#"></a></div>
+                            <div class="post-content">
+                                <p>{{=result['content'][0][:300]}}..<a href="{{=URL('show_detail', args=result['id'])}}" class="more-link">Continue reading <span class="meta-nav">&rarr;</span></a></p>
+                            </div>
+                        </div>
+{{else:}}
+
+<div class="blog-post">
+                            <div class="post-meta">
+                                <span class="author"><a href="#">{{=result['author'][0]}}</a></span>,
+                                <span>Posted at <strong>{{=result['date'][0]}}</strong></span>
+                            </div>
+                            <h2 class="post-title">{{=result['title'][0]}}</h2>
+                            <div class="post-thumb"><a href="#"></a></div>
+                            <div class="post-content">
+                                <p>Content does not exist.<a href="{{=URL('show_detail', args=result['id'])}}" class="more-link">Continue reading <span class="meta-nav">&rarr;</span></a></p>
+                            </div>
+                        </div>
+
+
+{{pass}}
+{{pass}}
+
+<nav  >
+            <ul class="pagination pagination-sm">
+                {{import math}} {{for i in range(int(math.ceil(search_result['response']['numFound']/10.0))):}}
+                <li {{if i==request.args(0, cast=int)-1:}} class="active"{{pass}}>
+                    <a href="{{=URL('default', 'search', args=i+1)}}?searchQuery={{=request.vars.searchQuery}}{{if request.vars.category:}}&category={{=request.vars.category}}{{pass}}">{{=i+1}}</a>
+                </li>
+                {{pass}}
+
+            </ul>
+        </nav>
+    </div>
+</div>
+                    
+                </div>
+            </div>
+        </section>
+
+
+
