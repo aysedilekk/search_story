@@ -15,5 +15,5 @@ This project is releated to Information Retrieval.
 
 ##Project Development Steps
 
-* gsgerdgg :white_check_mark:
+* IT WILL BE ADDED!!!!! :white_check_mark:
 
